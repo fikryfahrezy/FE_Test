@@ -7,27 +7,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#5a6a85",
-      dark: "#3d4a5c",
-      light: "#7a8a9f",
+      main: "#f59e0b",
+      dark: "#b45309",
+      light: "#fcd34d",
+      contrastText: "#ffffff",
     },
     secondary: {
-      main: "#424242",
+      main: "#d97706",
+      contrastText: "#ffffff",
     },
     background: {
       default: "#f5f5f5",
       paper: "#ffffff",
-    },
-    grey: {
-      100: "#f5f5f5",
-      200: "#eeeeee",
-      300: "#e0e0e0",
-      400: "#bdbdbd",
-      500: "#9e9e9e",
-      600: "#757575",
-      700: "#616161",
-      800: "#424242",
-      900: "#212121",
     },
   },
   typography: {
@@ -49,6 +40,50 @@ const theme = createTheme({
       defaultProps: {
         variant: "outlined",
         size: "small",
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          minWidth: "auto",
+          "&.Mui-selected": {
+            backgroundColor: "#f59e0b",
+            color: "#ffffff",
+            borderRadius: 4,
+          },
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          display: "none",
+        },
+      },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          "& .MuiTableRow-root": {
+            backgroundColor: "#fafafa",
+          },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "#fcd34d",
+            "&:hover": {
+              backgroundColor: "#fcd34d",
+            },
+          },
+          "&:hover": {
+            backgroundColor: "#f5f5f5",
+          },
+        },
       },
     },
   },

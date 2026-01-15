@@ -89,47 +89,16 @@ export default function LoginPage() {
         }}
       >
         <Box sx={{ width: "100%", maxWidth: 400 }}>
-          <Box
-            sx={{
+          <img
+            src="/app-logo.png"
+            alt="App Logo"
+            style={{
               width: "100%",
               height: 150,
-              border: "1px solid",
-              borderColor: "grey.400",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              mb: 4,
-              position: "relative",
-              "&::before, &::after": {
-                content: '""',
-                position: "absolute",
-                backgroundColor: "grey.400",
-              },
-              "&::before": {
-                width: "100%",
-                height: "1px",
-                transform: "rotate(20deg)",
-              },
-              "&::after": {
-                width: "100%",
-                height: "1px",
-                transform: "rotate(-20deg)",
-              },
+              objectFit: "contain",
+              marginBottom: 24,
             }}
-          >
-            <Typography
-              variant="h6"
-              sx={{
-                fontStyle: "italic",
-                color: "grey.600",
-                zIndex: 1,
-                bgcolor: "background.paper",
-                px: 1,
-              }}
-            >
-              App Logo
-            </Typography>
-          </Box>
+          />
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ mb: 3 }}>
@@ -147,6 +116,7 @@ export default function LoginPage() {
                   <TextField
                     {...field}
                     id="username"
+                    placeholder="Username"
                     fullWidth
                     size="small"
                     error={!!errors.username}
@@ -178,6 +148,7 @@ export default function LoginPage() {
                     {...field}
                     id="password"
                     type="password"
+                    placeholder="******"
                     fullWidth
                     size="small"
                     error={!!errors.password}
@@ -204,14 +175,6 @@ export default function LoginPage() {
                 type="submit"
                 variant="contained"
                 disabled={loginMutation.isPending}
-                sx={{
-                  bgcolor: "grey.800",
-                  color: "white",
-                  px: 4,
-                  "&:hover": {
-                    bgcolor: "grey.900",
-                  },
-                }}
               >
                 {loginMutation.isPending ? "Signing in..." : "Login"}
               </Button>
@@ -223,50 +186,12 @@ export default function LoginPage() {
       <Box
         sx={{
           flex: 1,
-          bgcolor: "#e8eaed",
           display: { xs: "none", md: "flex" },
-          justifyContent: "center",
-          alignItems: "center",
-          position: "relative",
-          border: "1px solid",
-          borderColor: "grey.400",
+          backgroundImage: 'url("/login-page-bg.webp")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            "&::before, &::after": {
-              content: '""',
-              position: "absolute",
-              backgroundColor: "grey.500",
-              width: "141%",
-              height: "1px",
-              top: "50%",
-              left: "-20%",
-            },
-            "&::before": {
-              transform: "rotate(45deg)",
-            },
-            "&::after": {
-              transform: "rotate(-45deg)",
-            },
-          }}
-        />
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: 500,
-            color: "grey.700",
-            zIndex: 1,
-            bgcolor: "#e8eaed",
-            px: 2,
-          }}
-        >
-          App Illustration/Background
-        </Typography>
-      </Box>
+      />
     </Box>
   );
 }
