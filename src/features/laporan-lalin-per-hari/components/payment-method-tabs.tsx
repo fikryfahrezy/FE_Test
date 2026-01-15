@@ -1,26 +1,41 @@
 "use client";
 
+import { useState } from "react";
 import { Box, Button, Tab, Tabs } from "@mui/material";
 import { FileDownload as FileDownloadIcon } from "@mui/icons-material";
 import { tabs } from "../constants";
 import type { PaymentMethod } from "../types";
+import { ExportMenu } from "./export-menu";
 
 type PaymentMethodTabsProps = {
   activeTab: PaymentMethod;
   onTabChange: (tab: PaymentMethod) => void;
-  onExport: () => void;
+  onExportExcel: () => void;
+  onExportPDF: () => void;
 };
 
 export function PaymentMethodTabs({
   activeTab,
   onTabChange,
-  onExport,
+  onExportExcel,
+  onExportPDF,
 }: PaymentMethodTabsProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
   const handleTabChange = (
     _event: React.SyntheticEvent,
     newValue: PaymentMethod,
   ) => {
     onTabChange(newValue);
+  };
+
+  const handleExportClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -40,11 +55,18 @@ export function PaymentMethodTabs({
       <Button
         variant="outlined"
         startIcon={<FileDownloadIcon />}
-        onClick={onExport}
+        onClick={handleExportClick}
         size="small"
       >
         Export
       </Button>
+      <ExportMenu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleCloseMenu}
+        onExportExcel={onExportExcel}
+        onExportPDF={onExportPDF}
+      />
     </Box>
   );
 }

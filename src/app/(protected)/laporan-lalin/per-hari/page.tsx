@@ -118,8 +118,14 @@ export default function LaporanLalinPerHariPage() {
     });
   };
 
-  const handleExport = () => {
-    console.log("Export clicked");
+  const handleExportExcel = () => {
+    console.log("Export to Excel clicked");
+    // TODO: Implement Excel export logic
+  };
+
+  const handleExportPDF = () => {
+    console.log("Export to PDF clicked");
+    // TODO: Implement PDF export logic
   };
 
   return (
@@ -142,7 +148,8 @@ export default function LaporanLalinPerHariPage() {
           <PaymentMethodTabs
             activeTab={activeTab}
             onTabChange={handleTabChange}
-            onExport={handleExport}
+            onExportExcel={handleExportExcel}
+            onExportPDF={handleExportPDF}
           />
 
           <LalinDataTable
