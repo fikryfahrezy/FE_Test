@@ -4,11 +4,8 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-} from '@tanstack/react-query';
-import {
-  ApiError,
-  highwayService,
-} from './highway-service';
+} from "@tanstack/react-query";
+import { ApiError, highwayService } from "./highway-service";
 import type {
   CreateGerbangRequest,
   CreateGerbangResponse,
@@ -22,27 +19,27 @@ import type {
   LoginResponse,
   UpdateGerbangRequest,
   UpdateGerbangResponse,
-} from './highway-service.types';
+} from "./highway-service.types";
 
 export const highwayKeys = {
-  all: ['highway'] as const,
-  gerbangs: () => { 
-    return [...highwayKeys.all, 'gerbangs'] as const
+  all: ["highway"] as const,
+  gerbangs: () => {
+    return [...highwayKeys.all, "gerbangs"] as const;
   },
   gerbang: (params: GetGerbangsParams) => {
     return [...highwayKeys.gerbangs(), params] as const;
   },
-  lalins: () => { 
-    return [...highwayKeys.all, 'lalins'] as const
+  lalins: () => {
+    return [...highwayKeys.all, "lalins"] as const;
   },
   lalin: (params: GetLalinsParams) => {
     return [...highwayKeys.lalins(), params] as const;
   },
-  auth: () => { 
-    return [...highwayKeys.all, 'auth'] as const
+  auth: () => {
+    return [...highwayKeys.all, "auth"] as const;
   },
-  home: () => { 
-    return [...highwayKeys.all, 'home'] as const
+  home: () => {
+    return [...highwayKeys.all, "home"] as const;
   },
 };
 
@@ -50,7 +47,7 @@ export function useGetGerbangs(
   params?: GetGerbangsParams,
   options?: Omit<
     UseQueryOptions<GetGerbangsResponse, ApiError>,
-    'queryKey' | 'queryFn'
+    "queryKey" | "queryFn"
   >,
 ) {
   return useQuery({
@@ -65,12 +62,12 @@ export function useGetGerbangs(
 export function useCreateGerbang(
   options?: Omit<
     MutationOptions<CreateGerbangResponse, ApiError, CreateGerbangRequest>,
-    'mutationFn'
+    "mutationFn"
   >,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess: onUserSuccess, ...restOptions } = options || {};
-  
+
   return useMutation({
     mutationFn: async (payload) => {
       return await highwayService.createGerbang(payload);
@@ -88,12 +85,12 @@ export function useCreateGerbang(
 export function useUpdateGerbang(
   options?: Omit<
     MutationOptions<UpdateGerbangResponse, ApiError, UpdateGerbangRequest>,
-    'mutationFn'
+    "mutationFn"
   >,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess: onUserSuccess, ...restOptions } = options || {};
-  
+
   return useMutation({
     mutationFn: async (payload) => {
       return await highwayService.updateGerbang(payload);
@@ -111,12 +108,12 @@ export function useUpdateGerbang(
 export function useDeleteGerbang(
   options?: Omit<
     MutationOptions<DeleteGerbangResponse, ApiError, DeleteGerbangRequest>,
-    'mutationFn'
+    "mutationFn"
   >,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess: onUserSuccess, ...restOptions } = options || {};
-  
+
   return useMutation({
     mutationFn: async (payload) => {
       return await highwayService.deleteGerbang(payload);
@@ -135,7 +132,7 @@ export function useGetLalins(
   params?: GetLalinsParams,
   options?: Omit<
     UseQueryOptions<GetLalinsResponse, ApiError>,
-    'queryKey' | 'queryFn'
+    "queryKey" | "queryFn"
   >,
 ) {
   return useQuery({
@@ -150,12 +147,12 @@ export function useGetLalins(
 export function useLogin(
   options?: Omit<
     MutationOptions<LoginResponse, ApiError, LoginRequest>,
-    'mutationFn'
+    "mutationFn"
   >,
 ) {
   const queryClient = useQueryClient();
   const { onSuccess: onUserSuccess, ...restOptions } = options || {};
-  
+
   return useMutation({
     mutationFn: async (payload) => {
       return await highwayService.login(payload);

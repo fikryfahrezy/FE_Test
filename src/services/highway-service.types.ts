@@ -3,7 +3,7 @@ export type ApiResponse<T> = {
   message: string;
   code: number;
   data: T;
-}
+};
 
 export type PaginatedData<T> = {
   total_pages: number;
@@ -13,14 +13,14 @@ export type PaginatedData<T> = {
     count: number;
     rows: T[];
   };
-}
+};
 
 export type Gerbang = {
   id: number;
   IdCabang: number;
   NamaGerbang: string;
   NamaCabang: string;
-}
+};
 
 export type GetGerbangsParams = {
   id?: number;
@@ -29,7 +29,7 @@ export type GetGerbangsParams = {
   NamaGerbang?: string;
   page?: number;
   limit?: number;
-}
+};
 
 export type GetGerbangsResponse = ApiResponse<PaginatedData<Gerbang>>;
 
@@ -38,28 +38,29 @@ export type CreateGerbangRequest = {
   IdCabang: number;
   NamaGerbang: string;
   NamaCabang: string;
-}
+};
 
-export type CreateGerbangResponse = ApiResponse<unknown> 
-  & Gerbang 
-  & { createdAt: string; updatedAt: string };
+export type CreateGerbangResponse = ApiResponse<unknown> &
+  Gerbang & { createdAt: string; updatedAt: string };
 
 export type UpdateGerbangRequest = {
   id: number;
   IdCabang: number;
   NamaGerbang: string;
   NamaCabang: string;
-}
+};
 
 export type UpdateGerbangResponse = ApiResponse<number[]>;
 
 export type DeleteGerbangRequest = {
   id: number;
   IdCabang: number;
-}
+};
 
-export type DeleteGerbangResponse = ApiResponse<unknown>
-  & { IdGerbang: number; IdCabang: number }
+export type DeleteGerbangResponse = ApiResponse<unknown> & {
+  IdGerbang: number;
+  IdCabang: number;
+};
 
 export type Lalin = {
   id: number;
@@ -82,24 +83,24 @@ export type Lalin = {
   eDKI: number;
   eMega: number;
   eFlo: number;
-}
+};
 
 export type GetLalinsParams = {
   tanggal?: string;
   page?: number;
   limit?: number;
-}
+};
 
-export type GetLalinsResponse = ApiResponse<PaginatedData<Lalin>> ;
+export type GetLalinsResponse = ApiResponse<PaginatedData<Lalin>>;
 
 export type LoginRequest = {
   username: string;
   password: string;
-}
+};
 
 export type LoginData = {
   is_logged_in?: number;
   token?: string;
-}
+};
 
 export type LoginResponse = ApiResponse<unknown> & LoginData;

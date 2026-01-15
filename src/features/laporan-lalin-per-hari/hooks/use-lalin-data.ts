@@ -26,13 +26,11 @@ type GroupedLalinEntry = {
   golV: number;
 };
 
-export function useLalinData({
-  lalinsData,
-  activeTab,
-}: UseLalinDataParams) {
+export function useLalinData({ lalinsData, activeTab }: UseLalinDataParams) {
   const aggregatedRows: LalinRow[] = useMemo(() => {
     if (!lalinsData?.data?.rows?.rows) {
-      return [];}
+      return [];
+    }
 
     const grouped = new Map<string, GroupedLalinEntry>();
 

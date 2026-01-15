@@ -58,14 +58,14 @@ export function useTableSort<T extends Record<string, unknown>>({
 
         // Handle null/undefined
         if (aValue == null && bValue == null) {
-          return 0
-        };
+          return 0;
+        }
         if (aValue == null) {
-          return 1
-        };
+          return 1;
+        }
         if (bValue == null) {
-          return -1
-        };
+          return -1;
+        }
 
         // String comparison (case-insensitive)
         if (typeof aValue === "string" && typeof bValue === "string") {
