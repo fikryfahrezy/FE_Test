@@ -7,14 +7,11 @@ import { useGetLalins } from "@/services/use-highway-service";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useTableSort, type SortDirection } from "@/hooks/use-table-sort";
 import { useClientSearch } from "@/hooks/use-client-search";
-import { FilterControls } from "@/features/laporan-lalin-per-hari/components/filter-controls";
-import { LalinDataTable } from "@/features/laporan-lalin-per-hari/components/lalin-data-table";
-import { PaymentMethodTabs } from "@/features/laporan-lalin-per-hari/components/payment-method-tabs";
-import { useLalinData } from "@/features/laporan-lalin-per-hari/hooks/use-lalin-data";
-import type {
-  PaymentMethod,
-  LalinRow,
-} from "@/features/laporan-lalin-per-hari/types";
+import { FilterControls } from "@/features/laporan-lalin/components/filter-controls";
+import { LalinDataTable } from "@/features/laporan-lalin/components/lalin-data-table";
+import { PaymentMethodTabs } from "@/features/laporan-lalin/components/payment-method-tabs";
+import { useLalinData } from "@/features/laporan-lalin/hooks/use-lalin-data";
+import type { PaymentMethod, LalinRow } from "@/features/laporan-lalin/types";
 
 export default function LaporanLalinPerHariPage() {
   const { getQueryParam, setQueryParams } = useQueryParams();
