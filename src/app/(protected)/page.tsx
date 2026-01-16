@@ -5,6 +5,7 @@ import { Grid, Typography, Stack } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetLalins } from "@/services/use-highway-service";
 import { useQueryParams } from "@/hooks/use-query-params";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useDashboardData } from "@/features/laporan-lalin/hooks/use-dashboard-data";
 import { FilterControls } from "@/features/laporan-lalin/components/filter-controls";
 import { BarChartCard } from "@/features/laporan-lalin/components/bar-chart-card";
@@ -31,11 +32,11 @@ export default function DashboardPage() {
       searchQuery,
     });
 
-  const handleSearchChange = (value: string) => {
+  const debouncedSearchChange = useDebounce((value: string) => {
     setQueryParams({
       search: value,
     });
-  };
+  }, 300);
 
   const handleDateChange = (date: Dayjs | null) => {
     setQueryParams({
@@ -61,9 +62,8 @@ export default function DashboardPage() {
       </Typography>
 
       <FilterControls
-        searchQuery={searchQuery}
         selectedDate={selectedDate}
-        onSearchChange={handleSearchChange}
+        onSearchChange={debouncedSearchChange}
         onDateChange={handleDateChange}
         onFilter={handleFilter}
         onReset={handleReset}

@@ -4,7 +4,7 @@ import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import { Add as AddIcon, Search as SearchIcon } from "@mui/icons-material";
 
 type SearchBarProps = {
-  searchQuery: string;
+  searchQuery?: string;
   onSearchChange: (value: string) => void;
   onAddClick: () => void;
 };

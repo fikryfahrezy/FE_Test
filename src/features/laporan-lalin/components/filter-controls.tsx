@@ -6,7 +6,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import type { Dayjs } from "dayjs";
 
 type FilterControlsProps = {
-  searchQuery: string;
+  searchQuery?: string;
   selectedDate: Dayjs | null;
   onSearchChange: (value: string) => void;
   onDateChange: (date: Dayjs | null) => void;

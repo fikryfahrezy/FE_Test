@@ -78,7 +78,9 @@ project-root/
     │   └── <hook-name>.ts
     ├── providers/                      # Global React's custom hook accross the project
     │   └── <provider-name>.ts
-    └── services/                       # SDK for external API service
-         ├── <service-name>.ts
-         └── use-<service-name>.ts      # Custom hook for managing sever state
+    ├── services/                       # SDK for external API service
+    │    ├── <service-name>.ts
+    │    └── use-<service-name>.ts      # Custom hook for managing sever state
+    └── utils/
+         └── <util-name>.ts             # Shareable utility function
 ```

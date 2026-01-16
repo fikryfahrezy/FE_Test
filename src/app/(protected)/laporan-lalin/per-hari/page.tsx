@@ -5,6 +5,7 @@ import { Box, Card, CardContent, Typography } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetLalins } from "@/services/use-highway-service";
 import { useQueryParams } from "@/hooks/use-query-params";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useTableSort, type SortDirection } from "@/hooks/use-table-sort";
 import { useClientSearch } from "@/hooks/use-client-search";
 import { FilterControls } from "@/features/laporan-lalin/components/filter-controls";
@@ -97,12 +98,12 @@ export default function LaporanLalinPerHariPage() {
     });
   };
 
-  const handleSearchChange = (value: string) => {
+  const debouncedSearchChange = useDebounce((value: string) => {
     setQueryParams({
       search: value,
       page: 0,
     });
-  };
+  }, 300);
 
   const handleDateChange = (date: Dayjs | null) => {
     setQueryParams({
@@ -156,9 +157,8 @@ export default function LaporanLalinPerHariPage() {
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <FilterControls
-            searchQuery={searchQuery}
             selectedDate={selectedDate}
-            onSearchChange={handleSearchChange}
+            onSearchChange={debouncedSearchChange}
             onDateChange={handleDateChange}
             onFilter={handleFilter}
             onReset={handleReset}

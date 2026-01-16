@@ -24,6 +24,7 @@ import { DeleteConfirmDialog } from "@/features/master-gerbang/components/delete
 import { ApiError } from "@/services/highway-service";
 import type { Gerbang } from "@/services/highway-service.types";
 import type { GerbangFormValues } from "@/features/master-gerbang/schemas";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const getErrorMessage = (error: unknown, fallback: string) => {
   if (error instanceof ApiError) {
@@ -96,12 +97,11 @@ export default function MasterGerbangPage() {
     });
   };
 
-  const handleSearchChange = (value: string) => {
+  const debouncedSearchChange = useDebounce((value: string) => {
     setQueryParams({
       search: value,
-      page: 0,
     });
-  };
+  }, 300);
 
   const handleOpenDialog = (gerbang?: Gerbang) => {
     if (gerbang) {
@@ -182,8 +182,7 @@ export default function MasterGerbangPage() {
             </Alert>
           ) : null}
           <SearchBar
-            searchQuery={searchQuery}
-            onSearchChange={handleSearchChange}
+            onSearchChange={debouncedSearchChange}
             onAddClick={() => {
               handleOpenDialog();
             }}
