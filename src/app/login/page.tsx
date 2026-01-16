@@ -42,14 +42,15 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    loginMutation.mutate(data, {
-      onSuccess: (data) => {
-        if (data.token) {
-          login(data.token);
-          router.replace("/");
-        }
-      },
-    });
+    try {
+      const result = await loginMutation.mutateAsync(data);
+      if (result.token) {
+        login(result.token);
+        router.replace("/");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   if (authLoading) {

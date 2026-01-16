@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import {
   useGetGerbangs,
   useCreateGerbang,
@@ -14,8 +21,19 @@ import { SearchBar } from "@/features/master-gerbang/components/search-bar";
 import { GerbangTable } from "@/features/master-gerbang/components/gerbang-table";
 import { GerbangFormDialog } from "@/features/master-gerbang/components/gerbang-form-dialog";
 import { DeleteConfirmDialog } from "@/features/master-gerbang/components/delete-confirm-dialog";
+import { ApiError } from "@/services/highway-service";
 import type { Gerbang } from "@/services/highway-service.types";
 import type { GerbangFormValues } from "@/features/master-gerbang/schemas";
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (error instanceof ApiError) {
+    return error.message || fallback;
+  }
+  if (error instanceof Error) {
+    return error.message || fallback;
+  }
+  return fallback;
+};
 
 export default function MasterGerbangPage() {
   const { getQueryParam, setQueryParams } = useQueryParams();
@@ -43,11 +61,16 @@ export default function MasterGerbangPage() {
   });
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [editingGerbang, setEditingGerbang] = useState<Gerbang | null>(null);
+  const [editedGerbang, setEditedGerbang] = useState<Gerbang | null>(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [gerbangToDelete, setGerbangToDelete] = useState<Gerbang | null>(null);
+  const [errorAlertText, setErrorAlertText] = useState("");
 
-  const { data: gerbangsData, isLoading } = useGetGerbangs({
+  const {
+    data: gerbangsData,
+    isLoading,
+    error: gerbangsError,
+  } = useGetGerbangs({
     page: page + 1,
     limit: rowsPerPage,
     NamaGerbang: searchQuery || undefined,
@@ -82,16 +105,16 @@ export default function MasterGerbangPage() {
 
   const handleOpenDialog = (gerbang?: Gerbang) => {
     if (gerbang) {
-      setEditingGerbang(gerbang);
+      setEditedGerbang(gerbang);
     } else {
-      setEditingGerbang(null);
+      setEditedGerbang(null);
     }
     setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
-    setEditingGerbang(null);
+    setEditedGerbang(null);
   };
 
   const handleOpenDeleteConfirm = (gerbang: Gerbang) => {
@@ -104,16 +127,25 @@ export default function MasterGerbangPage() {
     setGerbangToDelete(null);
   };
 
-  const handleSubmit = async (data: GerbangFormValues) => {
+  const handleCloseErrorAlert = () => {
+    setErrorAlertText("");
+  };
+
+  const handleCreate = async (data: GerbangFormValues) => {
     try {
-      if (editingGerbang) {
-        await updateMutation.mutateAsync(data);
-      } else {
-        await createMutation.mutateAsync(data);
-      }
+      await createMutation.mutateAsync(data);
       handleCloseDialog();
     } catch (error) {
-      console.error("Error saving gerbang:", error);
+      setErrorAlertText(getErrorMessage(error, "Failed to create gerbang"));
+    }
+  };
+
+  const handleEdit = async (data: GerbangFormValues) => {
+    try {
+      await updateMutation.mutateAsync(data);
+      handleCloseDialog();
+    } catch (error) {
+      setErrorAlertText(getErrorMessage(error, "Failed to update gerbang"));
     }
   };
 
@@ -126,7 +158,7 @@ export default function MasterGerbangPage() {
         });
         handleCloseDeleteConfirm();
       } catch (error) {
-        console.error("Error deleting gerbang:", error);
+        setErrorAlertText(getErrorMessage(error, "Failed to create gerbang"));
       }
     }
   };
@@ -144,6 +176,11 @@ export default function MasterGerbangPage() {
 
       <Card>
         <CardContent>
+          {gerbangsError ? (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {getErrorMessage(gerbangsError, "Failed to load gerbang data")}
+            </Alert>
+          ) : null}
           <SearchBar
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}
@@ -170,11 +207,12 @@ export default function MasterGerbangPage() {
       </Card>
 
       <GerbangFormDialog
+        key={editedGerbang ? editedGerbang.id : "new"}
         open={openDialog}
-        editingGerbang={editingGerbang}
+        defaultValues={editedGerbang}
         isSubmitting={createMutation.isPending || updateMutation.isPending}
         onClose={handleCloseDialog}
-        onSubmit={handleSubmit}
+        onSubmit={editedGerbang ? handleEdit : handleCreate}
       />
 
       <DeleteConfirmDialog
@@ -184,6 +222,22 @@ export default function MasterGerbangPage() {
         onClose={handleCloseDeleteConfirm}
         onConfirm={handleDelete}
       />
+
+      <Snackbar
+        open={errorAlertText !== ""}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={handleCloseErrorAlert}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+          onClose={handleCloseErrorAlert}
+        >
+          {errorAlertText}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

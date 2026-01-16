@@ -11,13 +11,11 @@ import {
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import type { Gerbang } from "@/services/highway-service.types";
 import { gerbangSchema, type GerbangFormValues } from "../schemas";
 
 type GerbangFormDialogProps = {
   open: boolean;
-  editingGerbang: Gerbang | null;
+  defaultValues: GerbangFormValues | null;
   isSubmitting: boolean;
   onClose: () => void;
   onSubmit: (data: GerbangFormValues) => Promise<void>;
@@ -25,7 +23,7 @@ type GerbangFormDialogProps = {
 
 export function GerbangFormDialog({
   open,
-  editingGerbang,
+  defaultValues,
   isSubmitting,
   onClose,
   onSubmit,
@@ -33,11 +31,10 @@ export function GerbangFormDialog({
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<GerbangFormValues>({
     resolver: zodResolver(gerbangSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       id: 0,
       IdCabang: 0,
       NamaGerbang: "",
@@ -45,30 +42,20 @@ export function GerbangFormDialog({
     },
   });
 
-  useEffect(() => {
-    if (open) {
-      if (editingGerbang) {
-        reset({
-          id: editingGerbang.id,
-          IdCabang: editingGerbang.IdCabang,
-          NamaGerbang: editingGerbang.NamaGerbang,
-          NamaCabang: editingGerbang.NamaCabang,
-        });
-      } else {
-        reset({
-          id: 0,
-          IdCabang: 0,
-          NamaGerbang: "",
-          NamaCabang: "",
-        });
-      }
-    }
-  }, [open, editingGerbang, reset]);
-
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      key={
+        defaultValues
+          ? `edit-${defaultValues.id}-${defaultValues.IdCabang}`
+          : "create"
+      }
+    >
       <DialogTitle>
-        {editingGerbang ? "Edit Gerbang" : "Add New Gerbang"}
+        {defaultValues ? "Edit Gerbang" : "Add New Gerbang"}
       </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
@@ -81,14 +68,16 @@ export function GerbangFormDialog({
                   return (
                     <TextField
                       {...field}
+                      value={field.value || ""}
                       label="ID"
                       type="number"
                       fullWidth
                       error={!!errors.id}
                       helperText={errors.id?.message}
-                      disabled={!!editingGerbang}
+                      disabled={!!defaultValues}
                       onChange={(event) => {
-                        field.onChange(parseInt(event.target.value) || 0);
+                        const nextValue = event.target.value;
+                        field.onChange(parseInt(nextValue, 10) || 0);
                       }}
                     />
                   );
@@ -103,14 +92,16 @@ export function GerbangFormDialog({
                   return (
                     <TextField
                       {...field}
+                      value={field.value || ""}
                       label="ID Cabang"
                       type="number"
                       fullWidth
                       error={!!errors.IdCabang}
                       helperText={errors.IdCabang?.message}
-                      disabled={!!editingGerbang}
+                      disabled={!!defaultValues}
                       onChange={(event) => {
-                        field.onChange(parseInt(event.target.value) || 0);
+                        const nextValue = event.target.value;
+                        field.onChange(parseInt(nextValue, 10) || 0);
                       }}
                     />
                   );
@@ -156,7 +147,7 @@ export function GerbangFormDialog({
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="contained" disabled={isSubmitting}>
-            {editingGerbang ? "Update" : "Create"}
+            {defaultValues ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </form>
