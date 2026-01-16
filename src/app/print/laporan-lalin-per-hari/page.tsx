@@ -11,6 +11,8 @@ import {
   TableRow,
   Typography,
   Paper,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import type {
@@ -29,31 +31,23 @@ const emptySummary: RuasSummary = {
 
 export default function LalinPrintPage() {
   const searchParams = useSearchParams();
-  const [payload, setPayload] = useState<LalinExportPayload | null>(null);
+  const key = searchParams.get("key");
+  const [payload, setPayload] = useState<
+    LalinExportPayload | null | undefined
+  >();
 
   useEffect(() => {
-    const key = searchParams.get("key");
     if (!key) {
       return;
     }
 
     const stored = localStorage.getItem(key);
-    if (!stored) {
-      return;
-    }
-
-    const parsed = JSON.parse(stored) as LalinExportPayload;
-    const timeout = window.setTimeout(() => {
-      setPayload(parsed);
-    }, 0);
-
+    const parsed = stored ? (JSON.parse(stored) as LalinExportPayload) : null;
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    setPayload(parsed);
     localStorage.removeItem(key);
 
-    return () => window.clearTimeout(timeout);
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (!payload) {
+    if (!parsed) {
       return;
     }
 
@@ -62,7 +56,7 @@ export default function LalinPrintPage() {
     }, 300);
 
     return () => window.clearTimeout(timeout);
-  }, [payload]);
+  }, [key]);
 
   const title = useMemo(() => {
     if (!payload) {
@@ -76,7 +70,19 @@ export default function LalinPrintPage() {
     return `Laporan Lalin Per Hari (${payload.activeTab}) - ${dateLabel}`;
   }, [payload]);
 
-  if (!payload) {
+  if (payload === undefined) {
+    return (
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "100vh" }}
+      >
+        <CircularProgress />
+      </Stack>
+    );
+  }
+
+  if (payload === null) {
     return (
       <Box sx={{ p: 4 }}>
         <Typography variant="h6">Data export tidak ditemukan.</Typography>
