@@ -54,28 +54,6 @@ export function GerbangTable({
               <TableCell>No</TableCell>
               <TableCell>
                 <SortableHeader
-                  active={sortBy === "id"}
-                  direction={sortDirection}
-                  onClick={() => {
-                    onSort("id");
-                  }}
-                >
-                  ID
-                </SortableHeader>
-              </TableCell>
-              <TableCell>
-                <SortableHeader
-                  active={sortBy === "IdCabang"}
-                  direction={sortDirection}
-                  onClick={() => {
-                    onSort("IdCabang");
-                  }}
-                >
-                  ID Cabang
-                </SortableHeader>
-              </TableCell>
-              <TableCell>
-                <SortableHeader
                   active={sortBy === "NamaGerbang"}
                   direction={sortDirection}
                   onClick={() => {
@@ -118,8 +96,6 @@ export function GerbangTable({
                 return (
                   <TableRow key={`${gerbang.id}-${gerbang.IdCabang}`} hover>
                     <TableCell>{rowNumber}</TableCell>
-                    <TableCell>{gerbang.id}</TableCell>
-                    <TableCell>{gerbang.IdCabang}</TableCell>
                     <TableCell>{gerbang.NamaGerbang}</TableCell>
                     <TableCell>{gerbang.NamaCabang}</TableCell>
                     <TableCell align="center">

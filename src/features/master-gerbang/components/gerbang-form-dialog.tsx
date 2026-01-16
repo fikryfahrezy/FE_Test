@@ -60,54 +60,56 @@ export function GerbangFormDialog({
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid size={6}>
-              <Controller
-                name="id"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      value={field.value || ""}
-                      label="ID"
-                      type="number"
-                      fullWidth
-                      error={!!errors.id}
-                      helperText={errors.id?.message}
-                      disabled={!!defaultValues}
-                      onChange={(event) => {
-                        const nextValue = event.target.value;
-                        field.onChange(parseInt(nextValue, 10) || 0);
-                      }}
-                    />
-                  );
-                }}
-              />
-            </Grid>
-            <Grid size={6}>
-              <Controller
-                name="IdCabang"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      value={field.value || ""}
-                      label="ID Cabang"
-                      type="number"
-                      fullWidth
-                      error={!!errors.IdCabang}
-                      helperText={errors.IdCabang?.message}
-                      disabled={!!defaultValues}
-                      onChange={(event) => {
-                        const nextValue = event.target.value;
-                        field.onChange(parseInt(nextValue, 10) || 0);
-                      }}
-                    />
-                  );
-                }}
-              />
-            </Grid>
+            {!defaultValues && (
+              <Grid size={6}>
+                <Controller
+                  name="id"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        {...field}
+                        value={field.value || ""}
+                        label="ID"
+                        type="number"
+                        fullWidth
+                        error={!!errors.id}
+                        helperText={errors.id?.message}
+                        onChange={(event) => {
+                          const nextValue = event.target.value;
+                          field.onChange(parseInt(nextValue, 10) || 0);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </Grid>
+            )}
+            {!defaultValues && (
+              <Grid size={6}>
+                <Controller
+                  name="IdCabang"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        {...field}
+                        value={field.value || ""}
+                        label="ID Cabang"
+                        type="number"
+                        fullWidth
+                        error={!!errors.IdCabang}
+                        helperText={errors.IdCabang?.message}
+                        onChange={(event) => {
+                          const nextValue = event.target.value;
+                          field.onChange(parseInt(nextValue, 10) || 0);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </Grid>
+            )}
             <Grid size={6}>
               <Controller
                 name="NamaGerbang"
