@@ -28,3 +28,12 @@ export type TabConfig = {
   label: string;
   value: PaymentMethod;
 };
+
+export type RuasSummary = {
+  golI: number;
+  golII: number;
+  golIII: number;
+  golIV: number;
+  golV: number;
+  totalLalin: number;
+};

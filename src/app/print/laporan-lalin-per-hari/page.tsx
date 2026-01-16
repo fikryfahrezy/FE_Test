@@ -15,10 +15,8 @@ import {
   Stack,
 } from "@mui/material";
 import { useSearchParams } from "next/navigation";
-import type {
-  LalinExportPayload,
-  RuasSummary,
-} from "@/features/laporan-lalin/hooks/use-lalin-export";
+import type { LalinExportPayload } from "@/features/laporan-lalin/hooks/use-lalin-export";
+import type { RuasSummary } from "@/features/laporan-lalin/types";
 
 const emptySummary: RuasSummary = {
   golI: 0,

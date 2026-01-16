@@ -1,16 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import type { LalinRow } from "../types";
-
-export type RuasSummary = {
-  golI: number;
-  golII: number;
-  golIII: number;
-  golIV: number;
-  golV: number;
-  totalLalin: number;
-};
+import type { LalinRow, RuasSummary } from "../types";
 
 export type LalinExportPayload = {
   rows: LalinRow[];

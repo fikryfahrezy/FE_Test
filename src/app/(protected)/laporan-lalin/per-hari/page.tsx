@@ -46,11 +46,11 @@ export default function LaporanLalinPerHariPage() {
 
   const { data: lalinsData, isLoading } = useGetLalins({
     tanggal: selectedDate?.format("YYYY-MM-DD"),
-    page: page + 1,
-    limit: rowsPerPage,
+    page: 1,
+    limit: 100000,
   });
 
-  const { aggregatedRows, summaryByRuas, grandTotal } = useLalinData({
+  const { displayRows, summaryByRuas, grandTotal } = useLalinData({
     lalinsData,
     activeTab,
   });
@@ -58,7 +58,7 @@ export default function LaporanLalinPerHariPage() {
   const { exportCsv, exportPdf } = useLalinExport();
 
   const searchedRows = useClientSearch({
-    data: aggregatedRows,
+    data: displayRows,
     searchQuery,
     searchKeys: ["ruas", "gerbang", "gardu"],
   });
@@ -67,6 +67,13 @@ export default function LaporanLalinPerHariPage() {
     () => sortedData(searchedRows),
     [searchedRows, sortedData],
   );
+
+  // Paginate on frontend after aggregation, search, and sort
+  const paginatedRows = useMemo(() => {
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    return sortedRows.slice(startIndex, endIndex);
+  }, [sortedRows, page, rowsPerPage]);
 
   const handleTabChange = (newTab: PaymentMethod) => {
     setQueryParams({
@@ -165,12 +172,12 @@ export default function LaporanLalinPerHariPage() {
           />
 
           <LalinDataTable
-            rows={sortedRows}
+            rows={paginatedRows}
             summaryByRuas={summaryByRuas}
             grandTotal={grandTotal}
             page={page}
             rowsPerPage={rowsPerPage}
-            totalCount={lalinsData?.data?.count || 0}
+            totalCount={sortedRows.length}
             sortBy={sortConfig.key}
             sortDirection={sortConfig.direction}
             isLoading={isLoading}
